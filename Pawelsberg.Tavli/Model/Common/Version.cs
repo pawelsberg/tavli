@@ -7,5 +7,5 @@ public record Version
     public int ReleaseMinor { get; set; }
     public string StringRepresentation() => $"v{ReleaseMajor}.{ReleaseMinor} ({TimeStamp})";
     public static Version GetCurrent()
-        => new Version { ReleaseMajor = 1, ReleaseMinor = 1, TimeStamp = new DateTime(2021, 7, 25) };
+        => new Version { ReleaseMajor = 2, ReleaseMinor = 1, TimeStamp = new DateTime(2023, 10, 22) };
 }

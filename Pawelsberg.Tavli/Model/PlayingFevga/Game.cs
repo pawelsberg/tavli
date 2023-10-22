@@ -19,8 +19,9 @@ public record Game : GameBase
         BearedOffCheckers = new Dictionary<PlayerColour, IReadOnlyList<Checker>>
             { { PlayerColour.White, new List<Checker>() }, {PlayerColour.Black, new List<Checker>() } };
     }
-
-    public PlayerColour? GetCurrentTurnPlayer()
+    public override PlayerColour? GetStatePlayer() => StatePlayer;
+    public override bool GetPlayerWonDouble() => State == GameState.PlayerWonDouble;
+    public override PlayerColour? GetCurrentTurnPlayer()
     {
         PlayerColour? currentTurnPlayer =
             State == GameState.PlayerWonRollForOrder
@@ -78,7 +79,7 @@ public record Game : GameBase
                 .ToDictionary(boc => boc.Key, boc => boc.Value);
     }
 
-    public IEnumerable<PlayerColour> GetPlayersRolling()
+    public override IEnumerable<PlayerColour> GetPlayersRolling()
     {
         switch (State)
         {
@@ -97,7 +98,7 @@ public record Game : GameBase
         }
 
     }
-    public IEnumerable<TurnRoll> GetAllTurnRolls()
+    public override IEnumerable<TurnRoll> GetAllTurnRolls()
     {
         switch (State)
         {
@@ -311,7 +312,7 @@ public record Game : GameBase
     }
 
 
-    public string StringRepresentation()
+    public override string StringRepresentation()
     {
         int bigestPointLength = Board.Points.Max(p => p?.Checkers.Count ?? 0);
         int pointLength = Math.Max(bigestPointLength, 6);
@@ -334,6 +335,9 @@ public record Game : GameBase
 
         return sb.ToString();
     }
+
+    public override bool GameOver() => State.GameOver();
+
     private string BottomLineStringRepresentation(int bottomLineIndex, int pointLength)
     {
         // TODO - remove mutability (sb)

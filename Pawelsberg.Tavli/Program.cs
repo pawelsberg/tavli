@@ -1,7 +1,7 @@
-﻿using Pawelsberg.Tavli.Model.Common;
+﻿using System.Text;
+using Pawelsberg.Tavli.Model.Common;
 using Pawelsberg.Tavli.Model.Extensions;
 using Pawelsberg.Tavli.Model.Main;
-using Pawelsberg.Tavli.Model.PlayingPortes;
 using Version = Pawelsberg.Tavli.Model.Common.Version;
 
 namespace Pawelsberg.Tavli;
@@ -11,49 +11,65 @@ public class Program
     static Random _random = new Random();
     static void Main(string[] args)
     {
-
+        Console.OutputEncoding = Encoding.Unicode;
         Configuration configuration = Configuration.CanLoad()
             ? Configuration.Load()
             : Configuration.GetNew();
         configuration.Save();
 
-        Game game = Game.GetBeginning();
-        //Game game = Game.ParseFromStringRepresentation(File.ReadAllText("game.txt"));
-        Console.WriteLine(game.StringRepresentation());
-        //bool whitePlayerBlocked = game.Board.IsPlayerBlocked(PlayerColour.Black);
-        //MinPipsInTwoRoundsBetterEndingPlayer blackPlayer = new MinPipsInTwoRoundsBetterEndingPlayer();
-        //MinPipsInTwoRoundsBetterEndingPlayer whitePlayer = new MinPipsInTwoRoundsBetterEndingPlayer();
-        //BestCoverageInTwoRoundsPlayer blackPlayer = new BestCoverageInTwoRoundsPlayer();
-        //BestCoverageInTwoRoundsPlayer whitePlayer = new BestCoverageInTwoRoundsPlayer();
-        //AskPlayer blackPlayer = new AskPlayer();
-        //AskPlayer whitePlayer = new AskPlayer();
-        StrategicPlayer blackPlayer = new StrategicPlayer();
-        StrategicPlayer whitePlayer = new StrategicPlayer();
-        //BestCoverageInTwoRoundsPlayer whitePlayer = new BestCoverageInTwoRoundsPlayer();
-        //AskStepsPlayer whitePlayer = new AskStepsPlayer();
-        //AskStepsPlayer blackPlayer = new AskStepsPlayer();
-        //Console.WriteLine(game.StringRepresentation());
+        Console.WriteLine($"TAVLI {configuration.TavliVersion.ReleaseMajor}.{configuration.TavliVersion.ReleaseMinor} Copyright © Pawel Welsberg 2023");
+
+        Console.WriteLine();
+        Console.WriteLine($"Choose one of ({String.Join(", ", Enum.GetNames(typeof(GameType)))})");
+        Console.Write("GameType>");
+        string gameTypeText = Console.ReadLine();
+        GameType gameType = Enum.Parse<GameType>(gameTypeText);
+        GameBase gameBeginning = gameType.GetGameBeginning();
+        
+        Console.WriteLine();
+        Console.WriteLine($"Choose black player type ({String.Join(", ", Enum.GetNames(typeof(PlayerType)))})");
+        Console.Write("BlackPlayerType>");
+        string blackPlayerTypeText = Console.ReadLine();
+        PlayerType blackPlayerType = Enum.Parse<PlayerType>(blackPlayerTypeText);
+        PlayerBase blackPlayer = blackPlayerType switch
+        {
+            PlayerType.Computer => gameType.GetStrategicPlayer(),
+            PlayerType.Human => gameType.GetAskPlayer()
+        };
+        
+        Console.WriteLine();
+        Console.WriteLine($"Choose white player type ({String.Join(", ", Enum.GetNames(typeof(PlayerType)))})");
+        Console.Write("WhitePlayerType>");
+        string whitePlayerTypeText = Console.ReadLine();
+        PlayerType whitePlayerType = Enum.Parse<PlayerType>(whitePlayerTypeText);
+        PlayerBase whitePlayer = whitePlayerType switch
+        {
+            PlayerType.Computer => gameType.GetStrategicPlayer(),
+            PlayerType.Human => gameType.GetAskPlayer()
+        };
+        
+        Console.WriteLine();
+        Console.WriteLine(gameBeginning.StringRepresentation());
+
 
         DateTime startDateTime = DateTime.UtcNow;
-        (Game endGame, List<Turn> allTurns) = (game, turns: new List<Turn>())
-            .For(gt => !gt.game.State.GameOver(), gt =>
+        (GameBase endGame, List<Turn> allTurns) = (game: gameBeginning, turns: new List<Turn>())
+            .For(gt => !gt.game.GameOver(), gt =>
           {
-              Game g = gt.game;
+              GameBase g = gt.game;
               Console.WriteLine();
               Console.WriteLine($"Rolling players: {string.Join(", ", g.GetPlayersRolling()) }");
               List<TurnRoll> rolls = g.GetAllTurnRolls().ToList();
               TurnRoll roll = PickTurnRoll(rolls);
               Console.WriteLine($"Rolled:{roll.StringRepresentation()}");
               PlayerColour? currentTurnPlayer = g.GetCurrentTurnPlayer();
-              TurnPlay turnPlay;
-              if (currentTurnPlayer == PlayerColour.Black)
-                  turnPlay = blackPlayer.ChooseTurnPlay(g, roll);
-              else
-                  turnPlay = whitePlayer.ChooseTurnPlay(g, roll);
+              TurnPlayBase turnPlay = currentTurnPlayer == PlayerColour.Black 
+                  ? blackPlayer.ChooseTurnPlay(g, roll) : 
+                  whitePlayer.ChooseTurnPlay(g, roll);
 
               Console.WriteLine($"Playing:");
               Console.WriteLine(turnPlay.StringRepresentation());
-              Game ng = turnPlay.ApplyToGame(g);
+              GameBase ng = turnPlay.ApplyToGame(g);
               Console.WriteLine(ng.StringRepresentation());
               return (game: ng, gt.turns.Concat(new List<Turn> { new Turn { Roll = roll, Play = turnPlay } }).ToList());
           });
@@ -66,8 +82,8 @@ public class Program
             EndDateTime = endDateTime,
             WhitePlayerType = PlayerType.Computer,
             BlackPlayerType = PlayerType.Computer,
-            PlayerWon = endGame.StatePlayer.Value,
-            GameWonDouble = endGame.State == GameState.PlayerWonDouble,
+            PlayerWon = endGame.GetStatePlayer()!.Value,
+            GameWonDouble = endGame.GetPlayerWonDouble(),
             Turns = allTurns
         }.Save();
         Console.ReadLine();

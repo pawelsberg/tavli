@@ -2,9 +2,12 @@
 
 namespace Pawelsberg.Tavli.Model.PlayingFevga;
 
-public abstract record Player
+public abstract record Player : PlayerBase
 {
     public abstract TurnPlay ChooseTurnPlay(Game game, TurnRoll roll);
+
+    public override TurnPlayBase ChooseTurnPlay(GameBase game, TurnRoll roll) 
+        => ChooseTurnPlay((Game)game, roll);
 }
 
 public record QuickPlayer : Player
