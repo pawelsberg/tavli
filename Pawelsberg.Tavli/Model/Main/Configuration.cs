@@ -57,6 +57,7 @@ public record Configuration
 
     public void Save()
     {
+        new FileInfo(ConfigurationFileFullPath).Directory!.Create();
         File.WriteAllText(ConfigurationFileFullPath, JsonConvert.SerializeObject(this));
     }
 }
