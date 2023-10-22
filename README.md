@@ -140,11 +140,11 @@ Main ideas:
 - Separation of the Actions and Pure functions. Actions: `Main()`, `PickTurnRoll()`, `ChooseTurnPlay()` (for Ask* players) and configuration related methods. Pure functions: all the remaining methods.   
 
 # TODO
-Board description in the docs
-Allow to configure how player can choose the next move.
-Allow to chose Computer alghorithm.
-Add hint about valid inputs when reading inputs from keyboard.
-Do not break on invalid input. Re try instead.
-Add possibility of loading/saving game state.
-Read proof the docs.
+- Board description in the docs
+- Allow to configure how player can choose the next move.
+- Allow to chose Computer alghorithm.
+- Add hint about valid inputs when reading inputs from keyboard.
+- Do not break on invalid input. Re try instead.
+- Add possibility of loading/saving game state.
+- Read proof the docs.
 
