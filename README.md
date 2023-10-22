@@ -73,6 +73,33 @@ Possible plays:
 Play>
 ```
 Player rolled 5 and 5. Which entitles player to move 4 times. All possible moves are listed. Player needs to type in choice. It is from `1` to `4` in this case.
+## Computer chooses move
+Computer chooses move automatically as shown below. Rolling is still controlled by user.
+```
+Rolling players: White
+Roll>r
+Rolled:(6,3)
+Playing:
+2 moves: Moves 6 from pos 11 to pos 17 with beating, Moves 3 from pos 17 to pos 20 with no beating
+State:PlayerMovedOrTriedOrBearedOffOrBoarded Player:White White player pips:158 Black player pips:163
+ 11  10   9   8   7   6       5   4   3   2   1   0
+╔═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╗
+║ ☻ │   │   │   │ ☺ │   ║   ║ ☺ │   │   │   │ ☺ │ ☻ ║   ║
+║ ☻ │   │   │   │ ☺ │   ║   ║ ☺ │   │   │   │   │ ☻ ║   ║
+║ ☻ │   │   │   │   │   ║   ║ ☺ │   │   │   │   │   ║   ║
+║ ☻ │   │   │   │   │   ║   ║ ☺ │   │   │   │   │   ║   ║
+║   │   │   │   │   │   ║   ║ ☺ │   │   │   │   │   ║   ║
+║   │   │   │   │   │   ║   ║   │   │   │   │   │   ║   ║
+╠═══╬═══╬═══╬═══╬═══╬═══╬BAR╬═══╬═══╬═══╬═══╬═══╬═══╬OFF╣
+║   │   │   │   │   │   ║   ║   │   │   │   │   │   ║   ║
+║ ☺ │   │   │   │   │   ║ 1 ║ ☻ │   │   │   │   │   ║   ║
+║ ☺ │   │   │   │   │   ║ ☺ ║ ☻ │   │   │   │   │   ║   ║
+║ ☺ │   │   │   │ ☻ │   ║   ║ ☻ │   │   │   │   │   ║   ║
+║ ☺ │   │   │   │ ☻ │   ║   ║ ☻ │   │   │   │   │   ║   ║
+║ ☺ │   │   │   │ ☻ │   ║   ║ ☻ │   │ ☻ │   │   │ ☺ ║   ║
+╚═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╝
+ 12  13  14  15  16  17      18  19  20  21  22  23
+```
 ## End of the game
 In case there is the end of the game `State` will indicate `PlayerWonSingle` or `PlayerWonDouble`.
 Field `Player` will indicate which player won.
