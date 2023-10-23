@@ -1,48 +1,44 @@
 # tavli
-Tavli games: portes (backgammon), plakoto, fevga, aso-dio - console application demonstrating functional programming in C#.
-Application uses command-line interface.
+Tavli games include portes (backgammon), plakoto, fevga, and asso-dio. 
+This console application demonstrates functional programming in C#. 
+The application uses a command-line interface.
 
-# How to play
-## Chose game
+# How to Play
+## Chose a Game
 ```
 TAVLI 2.1 Copyright © Pawel Welsberg 2023
 
 Choose one of (Portes, Plakoto, Fevga, AssoDio)
 GameType>
 ```
-Type in one of the 4 names listed in the brackets and press ENTER.
-## Chose type of black player
+Enter one of the four names listed in the parentheses and press ENTER.
+## Chose the Type of Black Player
 ```
 Choose black player type (Human, Computer)
 BlackPlayerType>
 ```
-Type in `Human` to be able to control this player's move.
-## Chose type of white player
-The same principles apply as to the black player.
-## Game board
-On the screen will be shown current state of the game at this point of time.
-## Roll for order
-Then the question to provide a roll for the order of who plays first.
+Enter `Human` if you wish to control this player's moves.
+## Chose the Type of White Player
+The same principles apply as for the black player.
+## Game Board
+The screen will display the current state of the game.
+## Roll for Order
+You'll be prompted to roll dice to determine the order of play:
 ```
 Rolling players: White, Black
 Roll>
 ```
-Each of the player rolls one die at the same time.
-Type in 2 digits without space representing roll of white and black player. For example if you type in `16` it will mean that white player rolled 1 and black player rolled 6. 
-Alternatively type in `r` for a random roll.
-Player with the greatest number starts first.
-If there is a draw players roll again.
-## Player rolls dice to move 
-A player will roll dice to move checkers
+Both players roll one die simultaneously. Enter two digits without spaces representing the rolls of the white and black players. For example, entering `16` means the white player rolled a 1 and the black player rolled a 6. Alternatively, enter `r` for a random roll. The player with the higher number goes first. If there's a tie, players roll again.
+## Player Rolls Dice to Move 
+A player will roll dice to move their checkers:
 ```
 Rolling players: White
 Roll>
 ```
-At this point need to provide two digits representing score of each of the die. For example `23` means 2 and 3.
-Alternatively type in `r` for a random roll.
-Note that question for rolling appears for human player AND computer. 
-## Player chooses move
-If the player is of `Human` type then is able to choose his move from one of the available moves. For example:
+Provide two digits representing the result of each die. For instance, `23` means a roll of 2 and 3. Again, you can enter `r` for a random roll. Note that the prompt for rolling appears for both human and computer players. 
+## Player Chooses Move
+If the player is of the `Human` type, they can choose their move from the available options. 
+For example:
 ```
  11  10   9   8   7   6       5   4   3   2   1   0
 ╔═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╦═══╗
@@ -72,9 +68,9 @@ Possible plays:
 4 - 4 moves: Moves 5 from pos 12 to pos 7 with no beating, Moves 5 from pos 12 to pos 7 with no beating, Moves 5 from pos 12 to pos 7 with no beating, Moves 5 from pos 12 to pos 7 with no beating
 Play>
 ```
-Player rolled 5 and 5. Which entitles player to move 4 times. All possible moves are listed. Player needs to type in choice. It is from `1` to `4` in this case.
+The player rolled two 5s, which entitles them to move four times. All possible moves are listed. The player should enter their choice, which in this case ranges from `1` to `4`.
 ## Computer chooses move
-Computer chooses move automatically as shown below. Rolling is still controlled by user.
+The computer selects its move automatically, as shown below. However, the user still controls the rolling:
 ```
 Rolling players: White
 Roll>r
@@ -101,9 +97,9 @@ State:PlayerMovedOrTriedOrBearedOffOrBoarded Player:White White player pips:158 
  12  13  14  15  16  17      18  19  20  21  22  23
 ```
 ## End of the game
-In case there is the end of the game `State` will indicate `PlayerWonSingle` or `PlayerWonDouble`.
-Field `Player` will indicate which player won.
-Following example shows the board at the end of the game:
+If the game ends, the `State` will indicate either `PlayerWonSingle` or `PlayerWonDouble`. 
+The `Player` field will show which player won. 
+The following example displays the board at the end of a game:
 ```
 State:PlayerWonSingle Player:White White player pips:0 Black player pips:9
  11  10   9   8   7   6       5   4   3   2   1   0
@@ -126,25 +122,24 @@ State:PlayerWonSingle Player:White White player pips:0 Black player pips:9
 ╚═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╩═══╝
  12  13  14  15  16  17      18  19  20  21  22  23
 ```
-Pressing enter will end the program.
+Press ENTER to exit the program.
 # Notes
 
-Application uses the following versioning:
-- Major part of the version always increases if there are any functional changes to the application. 
-- Minor part of the version indicate a bug fix to the version indicated by the major part.
-Pure bug fixes or non functional changes will always be released as a minor version increment.
+The application follows this versioning scheme:
+- The major version number increases with any functional changes. 
+- The minor version number indicates a bug fix for the version specified by the major number. 
+Pure bug fixes or non-functional changes always result in a minor version increment.
 
-Application demonstrates how to do functional programming in object oriented programming.
-Main ideas:
-- Immutability of variables/fields/properties. Once assigned they never change.
-- Separation of the Actions and Pure functions. Actions: `Main()`, `PickTurnRoll()`, `ChooseTurnPlay()` (for Ask* players) and configuration related methods. Pure functions: all the remaining methods.   
+The application showcases functional programming within an object-oriented paradigm. 
+Key concepts include:
+- Immutability: Once variables, fields, or properties are assigned, they never change.
+- Distinction between Actions and Pure functions. Actions include `Main()`, `PickTurnRoll()`, `ChooseTurnPlay()` (for Ask* players), and configuration-related methods. All other methods are Pure functions.  
 
 # TODO
-- Board description in the docs
+- Provide a board description in the documentation.
 - Allow to configure how player can choose the next move.
-- Allow to chose Computer alghorithm.
-- Add hint about valid inputs when reading inputs from keyboard.
-- Do not break on invalid input. Re try instead.
-- Add possibility of loading/saving game state.
-- Read proof the docs.
+- Offer the option to select a computer algorithm.
+- Provide hints for valid inputs when gathering keyboard input.
+- Handle invalid input gracefully by prompting the user to retry.
+- Implement game state saving/loading.
 
